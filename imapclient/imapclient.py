@@ -880,6 +880,10 @@ class IMAPClient(object):
         fname = self._normalise_folder(folder)
         data = self._command_and_check('status', fname, what_)
         response = parse_response(data)
+        if len(response) == 1:
+            # Workaround for imaplib bug with folders that contain special
+            # characters, such as quotes.
+            response =  parse_response(['%s %s' % (self._normalise_folder(data[0][1]), data[1])])
         status_items = response[-1]
         return dict(as_pairs(status_items))
 
