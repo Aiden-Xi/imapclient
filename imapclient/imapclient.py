@@ -1858,8 +1858,8 @@ class IMAPlibLoggerAdapter(LoggerAdapter):
     """Adapter preventing IMAP secrets from going to the logging facility."""
 
     def process(self, msg, kwargs):
-        # Fix a case in Python2 where UTF-8 encoded bytes reach the logger.
-        if not PY3 and isinstance(msg, bytes):
+        # Fix a case where UTF-8 encoded bytes reach the logger.
+        if isinstance(msg, bytes):
             msg = msg.decode('utf-8')
 
         for command in ("LOGIN", "AUTHENTICATE"):
